@@ -10,8 +10,39 @@ import mimetypes
 def SetEndpoint(endpoint, token):
     global JOPLINAPI_ENDPOINT
     global JOPLINAPI_TOKEN
+
     JOPLINAPI_ENDPOINT = endpoint
     JOPLINAPI_TOKEN = token
+
+    if token is None:
+        JOPLINAPI_TOKEN = input("Please enter your Joplin API Token: ").strip()
+        SaveEndpoint()
+
+
+def SaveEndpoint(file=None):
+    if file is None:
+        file = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), "joplin.json")
+    joplin = json.dumps(GetEndpoint())
+    f = open(file, 'w')
+    f.write(joplin)
+    f.close()
+
+
+def LoadEndpoint(file=None):
+    if file is None:
+        file = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), "joplin.json")
+
+    if not os.path.exists(file):
+        return False
+
+    f = open(file, 'r')
+    joplin = f.read()
+    f.close()
+    joplin = json.loads(joplin)
+    SetEndpoint(joplin['endpoint'], joplin['token'])
+    return True
 
 
 def GetEndpoint():
