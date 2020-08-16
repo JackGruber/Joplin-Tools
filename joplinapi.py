@@ -6,9 +6,6 @@ import base64
 import sys
 import mimetypes
 
-def Test(file, notebook_id):
-    GetEndpoint()
-
 def SetEndpoint(endpoint, token):
     global JOPLIN_ENDPOINT
     global JOPLINAPI_TOKEN
