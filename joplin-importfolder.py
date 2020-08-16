@@ -8,6 +8,7 @@ import os
 import time
 import joplinapi
 
+
 @click.command()
 @click.option(
     "-d",
@@ -37,7 +38,7 @@ def Main(path, destination, token):
         print("Path does not exist")
         sys.exit(1)
 
-    joplinapi.SetEndpoint("http://localhost:41184",token)
+    joplinapi.SetEndpoint("http://localhost:41184", token)
     notebook_id = joplinapi.GetNotebookID(destination)
 
     if notebook_id == False:
@@ -45,6 +46,7 @@ def Main(path, destination, token):
         sys.exit(1)
 
     WatchFolder(path, notebook_id)
+
 
 def WatchFolder(path, notebook_id):
     files = dict()
@@ -77,6 +79,7 @@ def WatchFolder(path, notebook_id):
                 files.pop(file)
 
         time.sleep(1)
+
 
 if __name__ == "__main__":
     Main()
