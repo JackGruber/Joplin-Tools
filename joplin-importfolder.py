@@ -47,7 +47,11 @@ def Main(path, destination, token, url):
         print("Path does not exist")
         sys.exit(1)
 
+    if token is not None:
+        joplinapi.SetEndpoint(url, token)
+    elif joplinapi.LoadEndpoint() == False:
     joplinapi.SetEndpoint(url, token)
+
     notebook_id = joplinapi.GetNotebookID(destination)
 
     if notebook_id == False:
