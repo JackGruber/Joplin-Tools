@@ -33,12 +33,21 @@ import joplinapi
     required=True,
     help="""Specify the folder for monitoring.""",
 )
-def Main(path, destination, token):
+@click.option(
+    "-u",
+    "--url",
+    "url",
+    required=False,
+    default="http://localhost:41184",
+    show_default=True,
+    help="""Specify the Joplin web clipper URL.""",
+)
+def Main(path, destination, token, url):
     if not os.path.exists(path):
         print("Path does not exist")
         sys.exit(1)
 
-    joplinapi.SetEndpoint("http://localhost:41184", token)
+    joplinapi.SetEndpoint(url, token)
     notebook_id = joplinapi.GetNotebookID(destination)
 
     if notebook_id == False:
