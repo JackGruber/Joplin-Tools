@@ -23,8 +23,8 @@ import joplinapi
     "-t",
     "--token",
     "token",
-    required=True,
-    help="""Specify the API token.""",
+    required=False,
+    help="""Specify the Joplin API token.""",
 )
 @click.option(
     "-p",
@@ -50,7 +50,7 @@ def Main(path, destination, token, url):
     if token is not None:
         joplinapi.SetEndpoint(url, token)
     elif joplinapi.LoadEndpoint() == False:
-    joplinapi.SetEndpoint(url, token)
+        joplinapi.SetEndpoint(url, token)
 
     notebook_id = joplinapi.GetNotebookID(destination)
 
