@@ -1,6 +1,6 @@
 # Joplin Hotfolder for fileupload
 
-Python Hotfolder script to add files to Joplin.
+Python Hotfolder script to add files to Joplin over the Joplin API.
 
 ## Info
 
