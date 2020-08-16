@@ -84,7 +84,7 @@ def CreateResource(file):
     joplin = GetEndpoint()
 
     filename = os.path.basename(file)
-    title = os.path.splitext(os.path.basename(file))[0]
+    title = filename
     f = open(file, "rb") 
     files = {
         "data": (json.dumps(file), f),
