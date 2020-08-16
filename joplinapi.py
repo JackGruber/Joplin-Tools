@@ -7,13 +7,13 @@ import sys
 import mimetypes
 
 def SetEndpoint(endpoint, token):
-    global JOPLIN_ENDPOINT
+    global JOPLINAPI_ENDPOINT
     global JOPLINAPI_TOKEN
-    JOPLIN_ENDPOINT = endpoint
+    JOPLINAPI_ENDPOINT = endpoint
     JOPLINAPI_TOKEN = token
 
 def GetEndpoint():
-    endpoint = {"endpoint":JOPLIN_ENDPOINT, "token": JOPLINAPI_TOKEN}
+    endpoint = {"endpoint":JOPLINAPI_ENDPOINT, "token": JOPLINAPI_TOKEN}
     return endpoint
 
 def GetNotebookID(notebook_name):
