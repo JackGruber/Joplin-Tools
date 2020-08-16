@@ -34,6 +34,12 @@ import joplinapi
     help="""Specify the folder for monitoring.""",
 )
 @click.option(
+    "--as-plain",
+    "plain",
+    required=False,
+    help="""Specify additional file extensions comma separated for input as text.""",
+)
+@click.option(
     "-u",
     "--url",
     "url",
@@ -42,7 +48,7 @@ import joplinapi
     show_default=True,
     help="""Specify the Joplin web clipper URL.""",
 )
-def Main(path, destination, token, url):
+def Main(path, destination, token, url, plain):
     if not os.path.exists(path):
         print("Path does not exist")
         sys.exit(1)
@@ -52,16 +58,19 @@ def Main(path, destination, token, url):
     elif joplinapi.LoadEndpoint() == False:
         joplinapi.SetEndpoint(url, token)
 
+    if plain is not None:
+        plain = plain.split(",")
+
     notebook_id = joplinapi.GetNotebookID(destination)
 
     if notebook_id == False:
         print("Notebook not found")
         sys.exit(1)
 
-    WatchFolder(path, notebook_id)
+    WatchFolder(path, notebook_id, plain)
 
 
-def WatchFolder(path, notebook_id):
+def WatchFolder(path, notebook_id, plain):
     files = dict()
     while 1:
         # Add files and process
@@ -71,7 +80,7 @@ def WatchFolder(path, notebook_id):
                 files[file] = os.path.getsize(os.path.join(path, file))
             elif os.path.getsize(os.path.join(path, file)) == files[file]:
                 print("Upload to Joplin: " + file)
-                if joplinapi.CreateNoteWithFile(os.path.join(path, file), notebook_id, {".md"}):
+                if joplinapi.CreateNoteWithFile(os.path.join(path, file), notebook_id, plain):
                     try:
                         os.remove(os.path.join(path, file))
                         files.pop(file)
