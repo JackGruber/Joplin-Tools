@@ -59,7 +59,6 @@ def CreateNoteWithFile(file, notebook_id, ext_as_text = None):
         datatype = "None"
 
     if datatype == "text/plain" or os.path.splitext(os.path.basename(file))[1] in ext_as_text:
-    #if datatype == "text/plain" or os.path.splitext(os.path.basename(file))[1] in {".md"}:
         with open(file, "r") as txt:
             text = txt.read()
         values = CreateJsonForNote(os.path.basename(file), notebook_id, text)
