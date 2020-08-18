@@ -23,3 +23,4 @@ python joplin-importfolder.py -d "Import" -p "C:\JoplinImport"
 - `-p` Folder for monitoring
 - `--as-plain` Specify file extensions comma separated for input as text. Example: `.md, .json`
 - `-u` Joplin Web Clipper URL. Default `http://localhost:41184`
+- `--tag` Specify of comma separated Tags which should be added to the note. Example: `scan, todo`

@@ -27,6 +27,12 @@ import joplinapi
     help="""Specify the Joplin API token.""",
 )
 @click.option(
+    "--tag",
+    "add_tag",
+    required=False,
+    help="""Specify Tags to add to the note. Comma separated for multiple tags. Tag must exist in Joplin.""",
+)
+@click.option(
     "-p",
     "--path",
     "path",
@@ -48,7 +54,7 @@ import joplinapi
     show_default=True,
     help="""Specify the Joplin web clipper URL.""",
 )
-def Main(path, destination, token, url, plain):
+def Main(path, destination, token, url, plain, add_tag):
     if not os.path.exists(path):
         print("Path does not exist")
         sys.exit(1)
@@ -67,10 +73,14 @@ def Main(path, destination, token, url, plain):
         print("Notebook not found")
         sys.exit(1)
 
-    WatchFolder(path, notebook_id, plain)
+    if add_tag is not None:
+        add_tag = add_tag.replace(", ", ",")
+        add_tag = add_tag.split(",")
+
+    WatchFolder(path, notebook_id, plain, add_tag)
 
 
-def WatchFolder(path, notebook_id, plain):
+def WatchFolder(path, notebook_id, plain, add_tags):
     files = dict()
     while 1:
         # Add files and process
@@ -80,7 +90,12 @@ def WatchFolder(path, notebook_id, plain):
                 files[file] = os.path.getsize(os.path.join(path, file))
             elif os.path.getsize(os.path.join(path, file)) == files[file]:
                 print("Upload to Joplin: " + file)
-                if joplinapi.CreateNoteWithFile(os.path.join(path, file), notebook_id, plain):
+                note_id = joplinapi.CreateNoteWithFile(
+                    os.path.join(path, file), notebook_id, plain)
+                if note_id != False:
+                    if add_tags is not None:
+                        for tag in add_tags:
+                            joplinapi.AddTagToNote(tag, note_id)
                     try:
                         os.remove(os.path.join(path, file))
                         files.pop(file)
