@@ -53,7 +53,7 @@ def GetEndpoint():
 
 
 def GetNotebookID(notebook_name):
-    """ Find the ID of the destination folder 
+    """ Find the ID of the destination folder
     adapted logic from jhf2442 on Joplin forum
     https://discourse.joplin.cozic.net/t/import-txt-files/692
     """
@@ -200,3 +200,19 @@ def AddTagToNote(tag, note_id):
             return False
         else:
             return True
+
+
+def Ping():
+    joplin = GetEndpoint()
+
+    try:
+        response = requests.get(joplin['endpoint'] + "/ping")
+    except:
+        return False
+
+    if response.status_code != 200:
+        return False
+    else:
+        if response.text != "JoplinClipperServer":
+            return False
+        return True

@@ -64,6 +64,10 @@ def Main(path, destination, token, url, plain, add_tag):
     elif joplinapi.LoadEndpoint() == False:
         joplinapi.SetEndpoint(url, token)
 
+    while joplinapi.Ping() == False:
+        print("Wait for Joplin")
+        time.sleep(10)
+
     if plain is not None:
         plain = plain.replace(", ", ",")
         plain = plain.split(",")
