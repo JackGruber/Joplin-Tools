@@ -6,6 +6,8 @@ import base64
 import sys
 import mimetypes
 
+JOPLIN_TAGS = None
+
 
 def SetEndpoint(endpoint, token):
     global JOPLINAPI_ENDPOINT
@@ -113,7 +115,8 @@ def CreateNoteWithFile(file, notebook_id, ext_as_text=None):
     requests_return = requests.post(
         joplin['endpoint'] + "/notes?token=" + joplin['token'], data=values)
     if requests_return.status_code == 200:
-        return True
+        json_response = requests_return.json()
+        return json_response['id']
     else:
         # print(requests_return.text)
         print("Note creation ERROR")
@@ -156,3 +159,44 @@ def EncodeResourceFile(filename, datatype):
     file.close()
     img = f"data:{datatype};base64,{encoded.decode()}"
     return img
+
+
+def GetTags():
+    joplin = GetEndpoint()
+    global JOPLIN_TAGS
+    if(JOPLIN_TAGS is None):
+        response = requests.get(joplin['endpoint'] +
+                                "/tags?token=" + joplin['token'])
+        if response.status_code != 200:
+            print("Tag load ERROR")
+            return False
+        else:
+            JOPLIN_TAGS = response.json()
+    return JOPLIN_TAGS
+
+
+def GetTagID(search_tag):
+    tags = GetTags()
+    search_tag = search_tag.strip()
+
+    if tags == False:
+        return False
+    for tag in tags:
+        if tag['title'].lower() == search_tag.lower():
+            return tag['id']
+
+    return False
+
+
+def AddTagToNote(tag, note_id):
+    joplin = GetEndpoint()
+    tag_id = GetTagID(tag)
+    if tag_id is not False:
+        json = '{"id": "' + note_id + '"}'
+        response = requests.post(joplin['endpoint'] +
+                                 "/tags/" + tag_id + "/notes?token=" + joplin['token'], data=json)
+        if response.status_code != 200:
+            print("Tagging ERROR")
+            return False
+        else:
+            return True
