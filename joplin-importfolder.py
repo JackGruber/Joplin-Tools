@@ -65,6 +65,7 @@ def Main(path, destination, token, url, plain, add_tag):
         joplinapi.SetEndpoint(url, token)
 
     if plain is not None:
+        plain = plain.replace(", ", ",")
         plain = plain.split(",")
 
     notebook_id = joplinapi.GetNotebookID(destination)
@@ -96,6 +97,7 @@ def WatchFolder(path, notebook_id, plain, add_tags):
                     if add_tags is not None:
                         for tag in add_tags:
                             joplinapi.AddTagToNote(tag, note_id)
+                    print("Joplin upload completed")
                     try:
                         os.remove(os.path.join(path, file))
                         files.pop(file)
