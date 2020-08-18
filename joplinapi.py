@@ -161,10 +161,10 @@ def EncodeResourceFile(filename, datatype):
     return img
 
 
-def GetTags():
+def LoadTags(reload=False):
     joplin = GetEndpoint()
     global JOPLIN_TAGS
-    if(JOPLIN_TAGS is None):
+    if(reload == True or JOPLIN_TAGS is None):
         response = requests.get(joplin['endpoint'] +
                                 "/tags?token=" + joplin['token'])
         if response.status_code != 200:
@@ -176,7 +176,7 @@ def GetTags():
 
 
 def GetTagID(search_tag):
-    tags = GetTags()
+    tags = LoadTags()
     search_tag = search_tag.strip()
 
     if tags == False:
