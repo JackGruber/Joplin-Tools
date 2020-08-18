@@ -188,9 +188,14 @@ def GetTagID(search_tag):
     return False
 
 
-def AddTagToNote(tag, note_id):
+def AddTagToNote(tag, note_id, create_tag=False):
     joplin = GetEndpoint()
     tag_id = GetTagID(tag)
+
+    if tag_id is False and create_tag == True:
+        CreateTag(tag)
+        tag_id = GetTagID(tag)
+
     if tag_id is not False:
         json = '{"id": "' + note_id + '"}'
         response = requests.post(joplin['endpoint'] +
@@ -200,6 +205,23 @@ def AddTagToNote(tag, note_id):
             return False
         else:
             return True
+
+
+def CreateTag(tag):
+    joplin = GetEndpoint()
+    tag_id = GetTagID(tag)
+    if tag_id is False:
+        json = '{"title": "' + tag + '"}'
+        response = requests.post(joplin['endpoint'] +
+                                 "/tags?token=" + joplin['token'], data=json)
+        if response.status_code != 200:
+            print("Create TAG ERROR")
+            return False
+        else:
+            json_response = response.json()
+            LoadTags(True)
+            return json_response['id']
+    return True
 
 
 def Ping():

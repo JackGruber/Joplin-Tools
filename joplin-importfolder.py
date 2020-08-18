@@ -30,7 +30,7 @@ import joplinapi
     "--tag",
     "add_tag",
     required=False,
-    help="""Specify Tags to add to the note. Comma separated for multiple tags. Tag must exist in Joplin.""",
+    help="""Specify Tags to add to the note. Comma separated for multiple tags.""",
 )
 @click.option(
     "-p",
@@ -67,7 +67,7 @@ def Main(path, destination, token, url, plain, add_tag):
     while joplinapi.Ping() == False:
         print("Wait for Joplin")
         time.sleep(10)
-
+    
     if plain is not None:
         plain = plain.replace(", ", ",")
         plain = plain.split(",")
@@ -100,7 +100,7 @@ def WatchFolder(path, notebook_id, plain, add_tags):
                 if note_id != False:
                     if add_tags is not None:
                         for tag in add_tags:
-                            joplinapi.AddTagToNote(tag, note_id)
+                            joplinapi.AddTagToNote(tag, note_id, True)
                     print("Joplin upload completed")
                     try:
                         os.remove(os.path.join(path, file))
