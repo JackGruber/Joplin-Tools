@@ -13,7 +13,7 @@ If you want to insert additional files directly as text, define them with the `-
 ## Example
 
 ```python
-python joplin-importfolder.py -d "Import" -p "C:\JoplinImport"
+python hotfolder.py -d "Import" -p "C:\JoplinImport"
 ```
 
 ## Parameters
