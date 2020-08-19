@@ -5,7 +5,7 @@ import json
 import base64
 import sys
 import mimetypes
-import joplintools
+from joplin import joplintools
 
 JOPLIN_TAGS = None
 
