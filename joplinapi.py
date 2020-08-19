@@ -53,7 +53,7 @@ def GetEndpoint():
 
 
 def GetNotebookID(notebook_name):
-    """ Find the ID of the destination folder 
+    """ Find the ID of the destination folder
     adapted logic from jhf2442 on Joplin forum
     https://discourse.joplin.cozic.net/t/import-txt-files/692
     """
@@ -161,10 +161,10 @@ def EncodeResourceFile(filename, datatype):
     return img
 
 
-def GetTags():
+def LoadTags(reload=False):
     joplin = GetEndpoint()
     global JOPLIN_TAGS
-    if(JOPLIN_TAGS is None):
+    if(reload == True or JOPLIN_TAGS is None):
         response = requests.get(joplin['endpoint'] +
                                 "/tags?token=" + joplin['token'])
         if response.status_code != 200:
@@ -176,7 +176,7 @@ def GetTags():
 
 
 def GetTagID(search_tag):
-    tags = GetTags()
+    tags = LoadTags()
     search_tag = search_tag.strip()
 
     if tags == False:
@@ -188,9 +188,14 @@ def GetTagID(search_tag):
     return False
 
 
-def AddTagToNote(tag, note_id):
+def AddTagToNote(tag, note_id, create_tag=False):
     joplin = GetEndpoint()
     tag_id = GetTagID(tag)
+
+    if tag_id is False and create_tag == True:
+        CreateTag(tag)
+        tag_id = GetTagID(tag)
+
     if tag_id is not False:
         json = '{"id": "' + note_id + '"}'
         response = requests.post(joplin['endpoint'] +
@@ -200,3 +205,36 @@ def AddTagToNote(tag, note_id):
             return False
         else:
             return True
+
+
+def CreateTag(tag):
+    joplin = GetEndpoint()
+    tag_id = GetTagID(tag)
+    if tag_id is False:
+        json = '{"title": "' + tag + '"}'
+        response = requests.post(joplin['endpoint'] +
+                                 "/tags?token=" + joplin['token'], data=json)
+        if response.status_code != 200:
+            print("Create TAG ERROR")
+            return False
+        else:
+            json_response = response.json()
+            LoadTags(True)
+            return json_response['id']
+    return True
+
+
+def Ping():
+    joplin = GetEndpoint()
+
+    try:
+        response = requests.get(joplin['endpoint'] + "/ping")
+    except:
+        return False
+
+    if response.status_code != 200:
+        return False
+    else:
+        if response.text != "JoplinClipperServer":
+            return False
+        return True
