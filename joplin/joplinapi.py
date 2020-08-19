@@ -255,7 +255,7 @@ def Ping():
         return True
 
 
-def GetNotes(note_id = None, fields = None):
+def GetNotes(note_id=None, fields=None):
     joplin = GetEndpoint()
 
     if fields is None and note_id is not None:
@@ -269,7 +269,7 @@ def GetNotes(note_id = None, fields = None):
         note_id = ""
 
     response = requests.get(joplin['endpoint'] +
-                                "/notes" + note_id + "?token=" + joplin['token'] + "&fields=" + fields)
+                            "/notes" + note_id + "?token=" + joplin['token'] + "&fields=" + fields)
     if response.status_code != 200:
         print("GetNotes ERROR")
         return False
@@ -283,8 +283,8 @@ def GetNoteResources(note_id):
     joplin = GetEndpoint()
 
     response = requests.get(joplin['endpoint'] +
-                                "/notes/" + note_id + "/resources?token=" + joplin['token'])
-    
+                            "/notes/" + note_id + "/resources?token=" + joplin['token'])
+
     if response.status_code != 200:
         print("GetResources ERROR")
         return False
@@ -299,7 +299,7 @@ def GetResourcesFile(res_id, file):
     joplin = GetEndpoint()
 
     response = requests.get(joplin['endpoint'] +
-                                "/resources/" + res_id + "/file?token=" + joplin['token'])
+                            "/resources/" + res_id + "/file?token=" + joplin['token'])
 
     if response.status_code != 200:
         print("GetResourcesFile ERROR")
@@ -308,15 +308,15 @@ def GetResourcesFile(res_id, file):
         try:
             open(file, 'wb').write(response.content)
         except:
-            return False    
+            return False
         return True
 
 
 def UpdateNote(note_id, json_properties):
     joplin = GetEndpoint()
-    
+
     response = requests.put(joplin['endpoint'] +
-                                "/notes/" + note_id + "?token=" + joplin['token'], json_properties)
+                            "/notes/" + note_id + "?token=" + joplin['token'], json_properties)
 
     if response.status_code != 200:
         print("GetResourcesFile ERROR")
