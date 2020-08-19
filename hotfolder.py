@@ -6,7 +6,7 @@ import click
 import sys
 import os
 import time
-import joplinapi
+from joplin import joplinapi
 
 
 @click.command()
@@ -54,7 +54,15 @@ import joplinapi
     show_default=True,
     help="""Specify the Joplin web clipper URL.""",
 )
-def Main(path, destination, token, url, plain, add_tag):
+@click.option(
+    "--preview/--no-preview",
+    "preview",
+    required=False,
+    default=False,
+    show_default=True,
+    help="""Create a preview of the first site from an PDF file.""",
+)
+def Main(path, destination, token, url, plain, add_tag, preview):
     if not os.path.exists(path):
         print("Path does not exist")
         sys.exit(1)
@@ -82,10 +90,10 @@ def Main(path, destination, token, url, plain, add_tag):
         add_tag = add_tag.replace(", ", ",")
         add_tag = add_tag.split(",")
 
-    WatchFolder(path, notebook_id, plain, add_tag)
+    WatchFolder(path, notebook_id, plain, add_tag, preview)
 
 
-def WatchFolder(path, notebook_id, plain, add_tags):
+def WatchFolder(path, notebook_id, plain, add_tags, preview):
     files = dict()
     while 1:
         # Add files and process
@@ -96,7 +104,7 @@ def WatchFolder(path, notebook_id, plain, add_tags):
             elif os.path.getsize(os.path.join(path, file)) == files[file]:
                 print("Upload to Joplin: " + file)
                 note_id = joplinapi.CreateNoteWithFile(
-                    os.path.join(path, file), notebook_id, plain)
+                    os.path.join(path, file), notebook_id, plain, preview)
                 if note_id != False:
                     if add_tags is not None:
                         for tag in add_tags:
