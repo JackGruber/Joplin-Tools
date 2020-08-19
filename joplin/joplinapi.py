@@ -5,7 +5,7 @@ import json
 import base64
 import sys
 import mimetypes
-import fitz
+import joplintools
 
 JOPLIN_TAGS = None
 
@@ -98,9 +98,9 @@ def CreateNoteWithFile(file, notebook_id, ext_as_text=None, preview=False):
             text = txt.read()
         values = CreateJsonForNote(os.path.basename(file), notebook_id, text)
     elif datatype[:5] == "image":
-        data = EncodeResourceFile(file, datatype)
+        img = EncodeResourceFile(file, datatype)
         values = CreateJsonForNote(
-            os.path.basename(file), notebook_id, "", data)
+            os.path.basename(file), notebook_id, "", img)
     else:
         body = ""
         img_link = ""
@@ -117,7 +117,7 @@ def CreateNoteWithFile(file, notebook_id, ext_as_text=None, preview=False):
         img = None
         if preview == True and datatype == "application/pdf":
             png = file + ".png"
-            CreatePDFPreviev(file, png, 1)
+            joplintools.CreatePDFPreviev(file, png, 1)
             img = CreateResource(png)
             if resource != False:
                 img_link = "![" + \
@@ -255,9 +255,3 @@ def Ping():
             return False
         return True
 
-
-def CreatePDFPreviev(pdffile, png, site):
-    doc = fitz.open(pdffile)
-    page = doc.loadPage(site - 1)
-    pix = page.getPixmap()
-    pix.writePNG(png)

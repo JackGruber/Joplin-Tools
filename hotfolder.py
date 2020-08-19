@@ -6,7 +6,7 @@ import click
 import sys
 import os
 import time
-import joplinapi
+from joplin import joplinapi
 
 
 @click.command()
