@@ -10,6 +10,15 @@ If no token is specified, the script will ask for it and then store it in the sc
 
 If you want to insert additional files directly as text, define them with the `--as-plain` switch.
 
+## Additional modules
+
+- [PyMuPDF](https://github.com/pymupdf/PyMuPDF)
+
+```console
+pip install PyMuPDF
+```
+
+
 ## Example
 
 ```python
@@ -24,3 +33,4 @@ python hotfolder.py -d "Import" -p "C:\JoplinImport"
 - `--as-plain` Specify file extensions comma separated for input as text. Example: `.md, .json`
 - `-u` Joplin Web Clipper URL. Default `http://localhost:41184`
 - `--tag` Specify of comma separated Tags which should be added to the note. Example: `scan, todo`
+- `--preview` Create a preview of the first site from an PDF file.

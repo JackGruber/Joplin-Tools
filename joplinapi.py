@@ -5,6 +5,7 @@ import json
 import base64
 import sys
 import mimetypes
+import fitz
 
 JOPLIN_TAGS = None
 
@@ -85,11 +86,10 @@ def GetNotebookID(notebook_name):
         return notebook_id
 
 
-def CreateNoteWithFile(file, notebook_id, ext_as_text=None):
+def CreateNoteWithFile(file, notebook_id, ext_as_text=None, preview=False):
     joplin = GetEndpoint()
 
     datatype = mimetypes.guess_type(file)[0]
-
     if datatype is None:
         datatype = "None"
 
@@ -102,6 +102,10 @@ def CreateNoteWithFile(file, notebook_id, ext_as_text=None):
         values = CreateJsonForNote(
             os.path.basename(file), notebook_id, "", data)
     else:
+        body = ""
+        img_link = ""
+        file_link = ""
+
         resource = CreateResource(file)
         if resource == False:
             print("Resource creation error")
@@ -109,8 +113,20 @@ def CreateNoteWithFile(file, notebook_id, ext_as_text=None):
 
         file_link = "[" + \
             os.path.basename(file) + "](:/" + resource['id'] + ")"
+
+        img = None
+        if preview == True and datatype == "application/pdf":
+            png = file + ".png"
+            CreatePDFPreviev(file, png, 1)
+            img = CreateResource(png)
+            if resource != False:
+                img_link = "![" + \
+                    os.path.basename(png) + "](:/" + img['id'] + ")\n"
+                os.remove(png)
+
+        body = img_link + file_link
         values = CreateJsonForNote(
-            os.path.basename(file), notebook_id, file_link)
+            os.path.basename(file), notebook_id, body, None)
 
     requests_return = requests.post(
         joplin['endpoint'] + "/notes?token=" + joplin['token'], data=values)
@@ -238,3 +254,10 @@ def Ping():
         if response.text != "JoplinClipperServer":
             return False
         return True
+
+
+def CreatePDFPreviev(pdffile, png, site):
+    doc = fitz.open(pdffile)
+    page = doc.loadPage(site - 1)
+    pix = page.getPixmap()
+    pix.writePNG(png)
