@@ -254,3 +254,72 @@ def Ping():
             return False
         return True
 
+
+def GetNotes(note_id = None, fields = None):
+    joplin = GetEndpoint()
+
+    if fields is None and note_id is not None:
+        fields = "id,title,body,is_todo,todo_completed,parent_id,updated_time,user_updated_time,user_created_time,encryption_applied"
+    elif fields is None and note_id is None:
+        fields = "id,title,is_todo,todo_completed,parent_id,updated_time,user_updated_time,user_created_time,encryption_applied"
+
+    if note_id is not None:
+        note_id = "/" + note_id
+    else:
+        note_id = ""
+
+    response = requests.get(joplin['endpoint'] +
+                                "/notes" + note_id + "?token=" + joplin['token'] + "&fields=" + fields)
+    if response.status_code != 200:
+        print("GetNotes ERROR")
+        return False
+    if response.text == "":
+        return False
+    else:
+        return response.json()
+
+
+def GetNoteResources(note_id):
+    joplin = GetEndpoint()
+
+    response = requests.get(joplin['endpoint'] +
+                                "/notes/" + note_id + "/resources?token=" + joplin['token'])
+    
+    if response.status_code != 200:
+        print("GetResources ERROR")
+        return False
+    else:
+        if response.text == "":
+            return None
+        else:
+            return response.json()
+
+
+def GetResourcesFile(res_id, file):
+    joplin = GetEndpoint()
+
+    response = requests.get(joplin['endpoint'] +
+                                "/resources/" + res_id + "/file?token=" + joplin['token'])
+
+    if response.status_code != 200:
+        print("GetResourcesFile ERROR")
+        return False
+    else:
+        try:
+            open(file, 'wb').write(response.content)
+        except:
+            return False    
+        return True
+
+
+def UpdateNote(note_id, json_properties):
+    joplin = GetEndpoint()
+    
+    response = requests.put(joplin['endpoint'] +
+                                "/notes/" + note_id + "?token=" + joplin['token'], json_properties)
+
+    if response.status_code != 200:
+        print("GetResourcesFile ERROR")
+        return False
+    else:
+        return True
