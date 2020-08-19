@@ -1,16 +1,14 @@
-# Joplin Hotfolder for fileupload
+# Joplin python tools
 
-Python Hotfolder script to add files to Joplin over the Joplin API.
+Various python tools for joplin.
 
-## Info
+## Tools
 
-Images and text (Mimetype `text/plain`) are inserted directly into the note, other Files are added as attachment. The files are deleted after processing.
-
-If no token is specified, the script will ask for it and then store it in the script's directory for later use when called without the `-t` option.
-
-If you want to insert additional files directly as text, define them with the `--as-plain` switch.
+- `hotfolder.py`
 
 ## Additional modules
+
+Please einstall the following modules:
 
 - [PyMuPDF](https://github.com/pymupdf/PyMuPDF)
 
@@ -18,14 +16,23 @@ If you want to insert additional files directly as text, define them with the `-
 pip install PyMuPDF
 ```
 
+## hotfolder.py
 
-## Example
+Python Hotfolder script to add files to Joplin over the Joplin API.
+
+Images and text (Mimetype `text/plain`) are inserted directly into the note, other Files are added as attachment. The files are deleted after processing.
+
+If no token is specified, the script will ask for it and then store it in the script's directory for later use when called without the `-t` option.
+
+If you want to insert additional files directly as text, define them with the `--as-plain` switch.
+
+### Example
 
 ```python
 python hotfolder.py -d "Import" -p "C:\JoplinImport"
 ```
 
-## Parameters
+### Parameters
 
 - `-d` Specify the notebook in which to place newly created notes. Default: `Import`
 - `-t` Joplin Authorisation token. Default: `Ask for token and store token`
