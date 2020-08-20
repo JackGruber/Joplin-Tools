@@ -96,6 +96,10 @@ def Main(path, notebook, token, url, plain, add_tag, preview):
 def WatchFolder(path, notebook_id, plain, add_tags, preview):
     files = dict()
     while 1:
+        while joplinapi.Ping() == False:
+            print("Wait for Joplin")
+            time.sleep(10)
+
         # Add files and process
         for file in os.listdir(path):
             if not file in files:
@@ -128,7 +132,7 @@ def WatchFolder(path, notebook_id, plain, add_tags, preview):
                 print("Removed orphan: " + file)
                 files.pop(file)
 
-        time.sleep(1)
+        time.sleep(10)
 
 
 if __name__ == "__main__":
