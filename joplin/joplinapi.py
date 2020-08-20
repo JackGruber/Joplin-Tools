@@ -323,3 +323,15 @@ def UpdateNote(note_id, json_properties):
         return False
     else:
         return True
+
+
+def GetFolderNotes(folder_id):
+    joplin = GetEndpoint()
+
+    response = requests.get(joplin['endpoint'] +
+                            "/folders/" + folder_id + "/notes?token=" + joplin['token'])
+    if response.status_code != 200:
+        print("GetFolderNotes ERROR")
+        return False
+    else:
+        return response.json()
