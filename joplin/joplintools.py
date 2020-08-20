@@ -41,6 +41,7 @@ def AddPDFPreviewToNote(note_id):
 
     pdfs = GetAllMimeResources(res, "application/pdf")
     if pdfs == False:
+        print("")
         return True
 
     note = joplinapi.GetNotes(note_id, "body, title")
