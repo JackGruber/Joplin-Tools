@@ -16,6 +16,7 @@ pip install PyMuPDF
 ## Tools
 
 - `hotfolder.py`
+- `add_pdf_previews.py`
 
 ### Parameters for all tools
 
@@ -45,3 +46,19 @@ python hotfolder.py -d "Import" -p "C:\JoplinImport"
 - `--as-plain` Specify file extensions comma separated for input as text. Example: `.md, .json`
 - `--tag` Specify of comma separated Tags which should be added to the note. Example: `scan, todo`
 - `--preview` Create a preview of the first site from an PDF file.
+
+### add_pdf_previews.py
+
+Search for notes with a PDF attachment an create a preview of the first PDF Site and add this Preview to Note.
+
+<img src="img/pdf_preview.jpg">
+
+**Parameters**
+
+- `-n` Defines the notebook in which notes with PDF file should be searched. Default: `All notebooks`
+
+**Example**
+
+```python
+python add_pdf_previews.py -n "Import"
+```
