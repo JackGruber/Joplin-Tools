@@ -1,10 +1,7 @@
 # Joplin python tools
 
 Various python tools for joplin.
-
-## Tools
-
-- `hotfolder.py`
+For the communication with Joplin the API is used.
 
 ## Additional modules
 
@@ -16,23 +13,32 @@ Please einstall the following modules:
 pip install PyMuPDF
 ```
 
-## hotfolder.py
+## Tools
 
-Python Hotfolder script to add files to Joplin over the Joplin API.
+- `hotfolder.py`
 
-Images and text (Mimetype `text/plain`) are inserted directly into the note, other Files are added as attachment. The files are deleted after processing.
+### Parameters for all tools
+
+- `-t` Joplin Authorisation token. Default: `Ask for token and store token`
+- `-u` Joplin Web Clipper URL. Default `http://localhost:41184`
 
 If no token is specified, the script will ask for it and then store it in the script's directory for later use when called without the `-t` option.
 
+### hotfolder.py
+
+Monitor a folder an add the Files to Joplin as a Note.
+
+Images and text (Mimetype `text/plain`) are inserted directly into the note, other Files are added as attachment. The files are deleted after processing.
+
 If you want to insert additional files directly as text, define them with the `--as-plain` switch.
 
-### Example
+**Example**
 
 ```python
 python hotfolder.py -d "Import" -p "C:\JoplinImport"
 ```
 
-### Parameters
+**Parameters**
 
 - `-d` Specify the notebook in which to place newly created notes. Default: `Import`
 - `-t` Joplin Authorisation token. Default: `Ask for token and store token`
