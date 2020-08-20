@@ -41,9 +41,7 @@ python hotfolder.py -d "Import" -p "C:\JoplinImport"
 **Parameters**
 
 - `-d` Specify the notebook in which to place newly created notes. Default: `Import`
-- `-t` Joplin Authorisation token. Default: `Ask for token and store token`
 - `-p` Folder for monitoring
 - `--as-plain` Specify file extensions comma separated for input as text. Example: `.md, .json`
-- `-u` Joplin Web Clipper URL. Default `http://localhost:41184`
 - `--tag` Specify of comma separated Tags which should be added to the note. Example: `scan, todo`
 - `--preview` Create a preview of the first site from an PDF file.
