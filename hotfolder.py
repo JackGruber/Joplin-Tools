@@ -11,9 +11,9 @@ from joplin import joplinapi
 
 @click.command()
 @click.option(
-    "-d",
-    "--destination",
-    "destination",
+    "-n",
+    "--notebook",
+    "notebook",
     default="Import",
     show_default=True,
     help="""Specify the notebook in which to place newly created notes."""
@@ -62,7 +62,7 @@ from joplin import joplinapi
     show_default=True,
     help="""Create a preview of the first site from an PDF file.""",
 )
-def Main(path, destination, token, url, plain, add_tag, preview):
+def Main(path, notebook, token, url, plain, add_tag, preview):
     if not os.path.exists(path):
         print("Path does not exist")
         sys.exit(1)
@@ -80,7 +80,7 @@ def Main(path, destination, token, url, plain, add_tag, preview):
         plain = plain.replace(", ", ",")
         plain = plain.split(",")
 
-    notebook_id = joplinapi.GetNotebookID(destination)
+    notebook_id = joplinapi.GetNotebookID(notebook)
 
     if notebook_id == False:
         print("Notebook not found")
