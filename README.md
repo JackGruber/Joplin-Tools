@@ -1,6 +1,6 @@
 # Joplin python tools
 
-Various python tools for joplin.
+Various python tools for Joplin.
 For the communication with Joplin the API is used.
 
 ## Additional modules
