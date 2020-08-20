@@ -15,8 +15,8 @@ pip install PyMuPDF
 
 ## Tools
 
-- `hotfolder.py`
-- `add_pdf_previews.py`
+- [hotfolder.py](#hotfolderpy)
+- [add_pdf_previews.py](#add_pdf_previewspy)
 
 ### Parameters for all tools
 
@@ -26,6 +26,8 @@ pip install PyMuPDF
 If no token is specified, the script will ask for it and then store it in the script's directory for later use when called without the `-t` option.
 
 ### hotfolder.py
+
+---
 
 Monitor a folder an add the Files to Joplin as a Note.
 
@@ -48,6 +50,8 @@ python hotfolder.py -d "Import" -p "C:\JoplinImport"
 - `--preview` Create a preview of the first site from an PDF file.
 
 ### add_pdf_previews.py
+
+---
 
 Search for notes with a PDF attachment an create a preview of the first PDF Site and add this Preview to Note.
 
