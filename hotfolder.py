@@ -99,10 +99,9 @@ def WatchFolder(path, notebook_id, plain, add_tags, preview):
         # Add files and process
         for file in os.listdir(path):
             if not file in files:
-                print("Added: " + file)
                 files[file] = os.path.getsize(os.path.join(path, file))
             elif os.path.getsize(os.path.join(path, file)) == files[file]:
-                print("Upload to Joplin: " + file)
+                print("Add to Joplin: " + file)
                 note_id = joplinapi.CreateNoteWithFile(
                     os.path.join(path, file), notebook_id, plain, preview)
                 if note_id != False:
