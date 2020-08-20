@@ -11,9 +11,9 @@ from joplin import joplinapi
 
 @click.command()
 @click.option(
-    "-d",
-    "--destination",
-    "destination",
+    "-n",
+    "--notebook",
+    "notebook",
     default="Import",
     show_default=True,
     help="""Specify the notebook in which to place newly created notes."""
@@ -62,7 +62,7 @@ from joplin import joplinapi
     show_default=True,
     help="""Create a preview of the first site from an PDF file.""",
 )
-def Main(path, destination, token, url, plain, add_tag, preview):
+def Main(path, notebook, token, url, plain, add_tag, preview):
     if not os.path.exists(path):
         print("Path does not exist")
         sys.exit(1)
@@ -80,7 +80,7 @@ def Main(path, destination, token, url, plain, add_tag, preview):
         plain = plain.replace(", ", ",")
         plain = plain.split(",")
 
-    notebook_id = joplinapi.GetNotebookID(destination)
+    notebook_id = joplinapi.GetNotebookID(notebook)
 
     if notebook_id == False:
         print("Notebook not found")
@@ -96,13 +96,16 @@ def Main(path, destination, token, url, plain, add_tag, preview):
 def WatchFolder(path, notebook_id, plain, add_tags, preview):
     files = dict()
     while 1:
+        while joplinapi.Ping() == False:
+            print("Wait for Joplin")
+            time.sleep(10)
+
         # Add files and process
         for file in os.listdir(path):
             if not file in files:
-                print("Added: " + file)
                 files[file] = os.path.getsize(os.path.join(path, file))
             elif os.path.getsize(os.path.join(path, file)) == files[file]:
-                print("Upload to Joplin: " + file)
+                print("Add to Joplin: " + file)
                 note_id = joplinapi.CreateNoteWithFile(
                     os.path.join(path, file), notebook_id, plain, preview)
                 if note_id != False:
@@ -129,7 +132,7 @@ def WatchFolder(path, notebook_id, plain, add_tags, preview):
                 print("Removed orphan: " + file)
                 files.pop(file)
 
-        time.sleep(1)
+        time.sleep(10)
 
 
 if __name__ == "__main__":
