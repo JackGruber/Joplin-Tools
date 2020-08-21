@@ -10,13 +10,25 @@ import json
 def CreatePDFPreview(pdffile, png, site):
     try:
         doc = fitz.open(pdffile)
+    except:
+        print("CreatePDFPreview PDF open ERROR")
+        return False
+
+    try:
         page = doc.loadPage(site - 1)
         pix = page.getPixmap()
-        pix.writePNG(png)
-        return True
-    except:
-        print("CreatePDFPreviev ERROR")
+    except Exception as e:
+        print("CreatePDFPreview '" + str(e) + "' ERROR")
         return False
+    
+    try:
+        pix.writePNG(png)
+    except:
+        print("CreatePDFPreview PNG write ERROR")
+        return False
+
+    return True
+
 
 def GetAllMimeResources(resources, mime):
     res = []
