@@ -117,7 +117,7 @@ def CreateNoteWithFile(file, notebook_id, ext_as_text=None, preview=False):
         img = None
         if preview == True and datatype == "application/pdf":
             png = file + ".png"
-            joplintools.CreatePDFPreviev(file, png, 1)
+            joplintools.CreatePDFPreview(file, png, 1)
             img = CreateResource(png)
             if resource != False:
                 img_link = "![](:/" + img['id'] + ")\n"

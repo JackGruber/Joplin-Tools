@@ -7,7 +7,7 @@ import os
 import json
 
 
-def CreatePDFPreviev(pdffile, png, site):
+def CreatePDFPreview(pdffile, png, site):
     try:
         doc = fitz.open(pdffile)
         page = doc.loadPage(site - 1)
@@ -70,7 +70,7 @@ def AddPDFPreviewToNote(note_id):
         if joplinapi.GetResourcesFile(pdf['id'], tmp) == False:
             return False
 
-        if CreatePDFPreviev(tmp, png, 1) == True:
+        if CreatePDFPreview(tmp, png, 1) == True:
             img_res = joplinapi.CreateResource(png)
             if img_res != False:
                 body_new = AddPDFPreviewToBody(body_new, pdf['id'], img_res['id'])
