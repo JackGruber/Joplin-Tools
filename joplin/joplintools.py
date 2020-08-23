@@ -7,11 +7,27 @@ import os
 import json
 
 
-def CreatePDFPreviev(pdffile, png, site):
-    doc = fitz.open(pdffile)
-    page = doc.loadPage(site - 1)
-    pix = page.getPixmap()
-    pix.writePNG(png)
+def CreatePDFPreview(pdffile, png, site):
+    try:
+        doc = fitz.open(pdffile)
+    except:
+        print("CreatePDFPreview PDF open ERROR")
+        return False
+
+    try:
+        page = doc.loadPage(site - 1)
+        pix = page.getPixmap()
+    except Exception as e:
+        print("CreatePDFPreview '" + str(e) + "' ERROR")
+        return False
+    
+    try:
+        pix.writePNG(png)
+    except:
+        print("CreatePDFPreview PNG write ERROR")
+        return False
+
+    return True
 
 
 def GetAllMimeResources(resources, mime):
@@ -66,11 +82,11 @@ def AddPDFPreviewToNote(note_id):
         if joplinapi.GetResourcesFile(pdf['id'], tmp) == False:
             return False
 
-        CreatePDFPreviev(tmp, png, 1)
-        img_res = joplinapi.CreateResource(png)
-        if img_res != False:
-            body_new = AddPDFPreviewToBody(body_new, pdf['id'], img_res['id'])
-            note_update = True
+        if CreatePDFPreview(tmp, png, 1) == True:
+            img_res = joplinapi.CreateResource(png)
+            if img_res != False:
+                body_new = AddPDFPreviewToBody(body_new, pdf['id'], img_res['id'])
+                note_update = True
 
     if note_update == True:
         data = {}
