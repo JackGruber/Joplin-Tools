@@ -108,16 +108,17 @@ def Main(notebook, title, token, url, add_tag, as_todo):
             data['body'] = body
             joplinapi.UpdateNote(note_id, json.dumps(data))
 
-    if as_todo == True:
-        data = {}
-        data['is_todo'] = 1
-        data['todo_due'] = 0
-        data['todo_completed'] = 0
-        joplinapi.UpdateNote(note_id, json.dumps(data))
+    if body != body_org:
+        if as_todo == True:
+            data = {}
+            data['is_todo'] = 1
+            data['todo_due'] = 0
+            data['todo_completed'] = 0
+            joplinapi.UpdateNote(note_id, json.dumps(data))
 
-    if add_tag is not None:
-        for tag in add_tag:
-            joplinapi.AddTagToNote(tag, note_id, True)
+        if add_tag is not None:
+            for tag in add_tag:
+                joplinapi.AddTagToNote(tag, note_id, True)
 
 
 if __name__ == "__main__":
