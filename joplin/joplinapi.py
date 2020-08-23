@@ -86,6 +86,21 @@ def GetNotebookID(notebook_name):
         return notebook_id
 
 
+def CreateNote(title, body, notebook_id):
+    joplin = GetEndpoint()
+
+    values = CreateJsonForNote(title, notebook_id, body, None)
+
+    requests_return = requests.post(
+        joplin['endpoint'] + "/notes?token=" + joplin['token'], data=values)
+    if requests_return.status_code == 200:
+        json_response = requests_return.json()
+        return json_response['id']
+    else:
+        print("CreateNote ERROR")
+        return False
+
+
 def CreateNoteWithFile(file, notebook_id, ext_as_text=None, preview=False):
     joplin = GetEndpoint()
 
