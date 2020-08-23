@@ -65,7 +65,6 @@ from joplin import joplinapi
 def Main(path, notebook, token, url, plain, add_tag, preview):
     if not os.path.exists(path):
         print("Path does not exist")
-        sys.exit(1)
 
     if token is not None:
         joplinapi.SetEndpoint(url, token)
@@ -101,7 +100,14 @@ def WatchFolder(path, notebook_id, plain, add_tags, preview):
             time.sleep(10)
 
         # Add files and process
-        for file in os.listdir(path):
+        try:
+            file_list = os.listdir(path)
+        except:
+            print("Path not found")
+            time.sleep(10)
+            continue
+        
+        for file in file_list:
             file_path = os.path.join(path, file)
             
             if file.find(".lock") > 0:
