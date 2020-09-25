@@ -68,10 +68,12 @@ def Main(notebook, title, token, url, add_tag, as_todo):
         add_tag = add_tag.replace(", ", ",")
         add_tag = add_tag.split(",")
 
-    note = joplinapi.Search(title, "note", "id,title,is_todo,body")
+    note = joplinapi.Search('title:"' + title + '"', "note", "id,title,is_todo,body")
+
     if len(note) == 1:
         note_id = note[0]['id']
-        body_org = note[0]['body']
+        note = joplinapi.GetNotes(note_id,"id,title,is_todo,body")
+        body_org = note['body']
     else:
         note_id = None
         body_org = ""
