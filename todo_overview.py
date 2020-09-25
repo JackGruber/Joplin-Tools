@@ -74,6 +74,9 @@ def Main(notebook, title, token, url, add_tag, as_todo):
         note_id = note[0]['id']
         note = joplinapi.GetNotes(note_id,"id,title,is_todo,body")
         body_org = note['body']
+    elif len(note) > 1:
+        print("Error multiple matching notes found")
+        sys.exit(1)
     else:
         note_id = None
         body_org = ""
