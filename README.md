@@ -8,6 +8,8 @@ For the communication with Joplin the API is used.
 Please einstall the following modules:
 
 - [PyMuPDF](https://github.com/pymupdf/PyMuPDF)
+- [Click](https://click.palletsprojects.com)
+- Requests
 
 ```console
 pip install click
