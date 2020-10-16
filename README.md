@@ -72,7 +72,7 @@ python add_pdf_previews.py -n "Import"
 
 ---
 
-Create or Updates a note witch a list of all open ToDo's. All to-dos that have been exceeded are marked with a ❗.
+Creates or Updates a note with a list of all open ToDo's. All to-dos that have been exceeded are marked with a ❗.
 
 <img src="img/todo_overview.jpg">
 
