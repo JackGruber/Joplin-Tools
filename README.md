@@ -10,6 +10,8 @@ Please einstall the following modules:
 - [PyMuPDF](https://github.com/pymupdf/PyMuPDF)
 
 ```console
+pip install click
+pip install requests
 pip install PyMuPDF
 ```
 
