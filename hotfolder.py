@@ -65,7 +65,6 @@ from joplin import joplinapi
 def Main(path, notebook, token, url, plain, add_tag, preview):
     if not os.path.exists(path):
         print("Path does not exist")
-        sys.exit(1)
 
     if token is not None:
         joplinapi.SetEndpoint(url, token)
@@ -101,10 +100,25 @@ def WatchFolder(path, notebook_id, plain, add_tags, preview):
             time.sleep(10)
 
         # Add files and process
-        for file in os.listdir(path):
+        try:
+            file_list = os.listdir(path)
+        except:
+            print("Path not found")
+            time.sleep(10)
+            continue
+        
+        for file in file_list:
+            file_path = os.path.join(path, file)
+            
+            if file.find(".lock") > 0:
+                continue
+            
             if not file in files:
-                files[file] = os.path.getsize(os.path.join(path, file))
-            elif os.path.getsize(os.path.join(path, file)) == files[file]:
+                files[file] = os.path.getsize(file_path)
+            elif os.path.getsize(file_path) == files[file] and not os.path.exists(file_path + ".lock"):
+                f = open(file_path + ".lock", 'w')
+                f.close()
+
                 print("Add to Joplin: " + file)
                 note_id = joplinapi.CreateNoteWithFile(
                     os.path.join(path, file), notebook_id, plain, preview)
@@ -114,7 +128,8 @@ def WatchFolder(path, notebook_id, plain, add_tags, preview):
                             joplinapi.AddTagToNote(tag, note_id, True)
                     print("Joplin upload completed")
                     try:
-                        os.remove(os.path.join(path, file))
+                        os.remove(file_path)
+                        os.remove(file_path + ".lock")
                         files.pop(file)
                     except:
                         print("File remove failed: " + file)
@@ -123,7 +138,7 @@ def WatchFolder(path, notebook_id, plain, add_tags, preview):
                     files[file] = -1
                 print("")
             elif files[file] >= 0:
-                files[file] = os.path.getsize(os.path.join(path, file))
+                files[file] = os.path.getsize(file_path)
 
         # Remove orphan entrys
         check = files.copy()

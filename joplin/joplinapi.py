@@ -86,6 +86,21 @@ def GetNotebookID(notebook_name):
         return notebook_id
 
 
+def CreateNote(title, body, notebook_id):
+    joplin = GetEndpoint()
+
+    values = CreateJsonForNote(title, notebook_id, body, None)
+
+    requests_return = requests.post(
+        joplin['endpoint'] + "/notes?token=" + joplin['token'], data=values)
+    if requests_return.status_code == 200:
+        json_response = requests_return.json()
+        return json_response['id']
+    else:
+        print("CreateNote ERROR")
+        return False
+
+
 def CreateNoteWithFile(file, notebook_id, ext_as_text=None, preview=False):
     joplin = GetEndpoint()
 
@@ -117,7 +132,7 @@ def CreateNoteWithFile(file, notebook_id, ext_as_text=None, preview=False):
         img = None
         if preview == True and datatype == "application/pdf":
             png = file + ".png"
-            joplintools.CreatePDFPreviev(file, png, 1)
+            joplintools.CreatePDFPreview(file, png, 1)
             img = CreateResource(png)
             if resource != False:
                 img_link = "![](:/" + img['id'] + ")\n"
@@ -332,6 +347,21 @@ def GetFolderNotes(folder_id):
                             "/folders/" + folder_id + "/notes?token=" + joplin['token'])
     if response.status_code != 200:
         print("GetFolderNotes ERROR")
+        return False
+    else:
+        return response.json()
+
+
+def Search(query, type, fields=None):
+    joplin = GetEndpoint()
+
+    if fields is None:
+        fields = "id,title"
+
+    response = requests.get(joplin['endpoint'] +
+                            "/search?token=" + joplin['token'] + "&query=" + query + "&type=" + type + "&fields=" + fields)
+    if response.status_code != 200:
+        print("Search ERROR")
         return False
     else:
         return response.json()
