@@ -100,6 +100,8 @@ Since there is no possibility for an automatic backup under windows, the require
 
 Rename the `JoplinWinBackup.ini.example` to `JoplinWinBackup.ini` and place it in the same folder es the `JoplinWinBackup.au3` or `JoplinWinBackup.exe`.
 
+The latest JoplinWinBackup.exe can be downloaded from the [latest release](https://github.com/JackGruber/Joplin-Tools/releases/latest/download/JoplinWinBackup.exe).
+
 Options from the JoplinWinBackup.ini
 
 - `JoplinWinBackup` Defines the Path to Joplin exe. Default `C:\Program Files\Joplin\Joplin.exe`
