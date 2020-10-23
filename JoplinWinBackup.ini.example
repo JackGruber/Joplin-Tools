@@ -1,0 +1,10 @@
+[General]
+joplin=C:\Program Files\Joplin\Joplin.exe
+backup_folder=C:\Backup
+key_combo=fej
+save_dialog=Speichern unter
+ask_for_start=1
+backup_file_add_date=0
+backup_file_add_time=0
+backup_file_name="joplin_backup.jex"
+overwrite_file=0

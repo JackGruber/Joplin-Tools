@@ -1,11 +1,11 @@
-# Joplin python tools
+# Joplin tools
 
 Various python tools for Joplin.
 For the communication with Joplin the API is used.
 
-## Additional modules
+## Additional python modules
 
-Please einstall the following modules:
+Please einstall the following python modules:
 
 - [PyMuPDF](https://github.com/pymupdf/PyMuPDF)
 - [Click](https://click.palletsprojects.com)
@@ -22,6 +22,7 @@ pip install PyMuPDF
 - [hotfolder.py](#hotfolderpy)
 - [add_pdf_previews.py](#add_pdf_previewspy)
 - [todo_overview.py](#todo_overviewpy)
+- [JoplinWinBackup.au3](#JoplinWinBackupau3)
 
 ### Parameters for all tools
 
@@ -92,3 +93,21 @@ Creates or Updates a note with a list of all open ToDo's. All to-dos that have b
 ```python
 python todo_overview.py --title "Open ToDo's" --as-todo --tag "importend"
 ```
+
+### JoplinWinBackup.au3
+
+Since there is no possibility for an automatic backup under windows, the required key combinations are sent to joplin via autoit to create a backup.
+
+Rename the `JoplinWinBackup.ini.example` to `JoplinWinBackup.ini` and place it in the same folder es the `JoplinWinBackup.au3` or `JoplinWinBackup.exe`.
+
+Options from the JoplinWinBackup.ini
+
+- `JoplinWinBackup` Defines the Path to Joplin exe. Default `C:\Program Files\Joplin\Joplin.exe`
+- `backup_folder` Path to store the Backups. Default `C:\Backup`
+- `key_combo` Key combo to get to the "JEX - Joplin export File" menue. Default `fej`
+- `save_dialog` Dialog Title of the save/eport dialog. Default `Speichern unter`
+- `ask_for_start` Ask if backup should be started. Default `1`, `0` = No, `1`= Yes
+- `backup_file_add_date` Append date to the Backupfile. Default `1`, `0` = No, `1`= Yes
+- `backup_file_add_time` Append time to the Backupfile. Default `1`, `0` = No, `1`= Yes
+- `backup_file_name` Filename of the Backup. Default `joplin_backup.jex`
+- `overwrite_file` Overwrite existing backup file. Default `0`, `0` = No, `1`= Yes
