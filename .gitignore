@@ -4,3 +4,5 @@ venv
 hotfolder.spec
 build/
 dist/
+*.exe
+JoplinWinBackup.ini
