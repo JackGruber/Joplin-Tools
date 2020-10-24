@@ -1,7 +1,7 @@
 # Joplin tools
 
-Various python tools for Joplin.
-For the communication with Joplin the API is used.
+Various Python and AutoIt tools for Joplin. 
+Python use the Joplin API for communication.
 
 ## Additional python modules
 
@@ -95,6 +95,8 @@ python todo_overview.py --title "Open ToDo's" --as-todo --tag "importend"
 ```
 
 ### JoplinWinBackup.au3
+
+---
 
 Since there is no possibility for an automatic backup under windows, the required key combinations are sent to joplin via autoit to create a backup.
 
