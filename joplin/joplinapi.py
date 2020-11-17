@@ -206,17 +206,13 @@ def LoadTags(reload=False):
 
 
 def GetTagID(search_tag):
-    tags = LoadTags()
     search_tag = search_tag.strip()
+    tags = Search(search_tag, "tag", limit=10, page=1, fields="id")
 
-    if tags == False:
-        return False
-    for tag in tags:
-        if tag['title'].lower() == search_tag.lower():
-            return tag['id']
-
+    if len(tags['items']) == 1:
+        return tags['items'][0]['id']
+    else:
     return False
-
 
 def AddTagToNote(tag, note_id, create_tag=False):
     joplin = GetEndpoint()
