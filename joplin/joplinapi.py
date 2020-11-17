@@ -352,14 +352,16 @@ def GetFolderNotes(folder_id):
         return response.json()
 
 
-def Search(query, type, fields=None):
+def Search(query, type, limit=10, page=1, fields=None, order_by="", order_dir="ASC"):
     joplin = GetEndpoint()
 
     if fields is None:
         fields = "id,title"
 
+    if order_by != "":
+        order_by = "&order_by=" + order_by
     response = requests.get(joplin['endpoint'] +
-                            "/search?token=" + joplin['token'] + "&query=" + query + "&type=" + type + "&fields=" + fields)
+                            "/search?token=" + joplin['token'] + "&query=" + query + "&type=" + type + "&fields=" + fields + "&limit=" + str(limit) + "&page=" + str(page) + "&order_dir=" + order_dir + order_by)
     if response.status_code != 200:
         print("Search ERROR")
         return False
