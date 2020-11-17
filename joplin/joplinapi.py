@@ -190,29 +190,14 @@ def EncodeResourceFile(filename, datatype):
     img = f"data:{datatype};base64,{encoded.decode()}"
     return img
 
-
-def LoadTags(reload=False):
-    joplin = GetEndpoint()
-    global JOPLIN_TAGS
-    if(reload == True or JOPLIN_TAGS is None):
-        response = requests.get(joplin['endpoint'] +
-                                "/tags?token=" + joplin['token'])
-        if response.status_code != 200:
-            print("Tag load ERROR")
-            return False
-        else:
-            JOPLIN_TAGS = response.json()
-    return JOPLIN_TAGS
-
-
 def GetTagID(search_tag):
     search_tag = search_tag.strip()
     tags = Search(search_tag, "tag", limit=10, page=1, fields="id")
-
+    
     if len(tags['items']) == 1:
         return tags['items'][0]['id']
     else:
-    return False
+        return False
 
 def AddTagToNote(tag, note_id, create_tag=False):
     joplin = GetEndpoint()
@@ -245,7 +230,6 @@ def CreateTag(tag):
             return False
         else:
             json_response = response.json()
-            LoadTags(True)
             return json_response['id']
     return True
 
