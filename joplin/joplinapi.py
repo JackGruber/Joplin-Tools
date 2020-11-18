@@ -54,33 +54,25 @@ def GetEndpoint():
 
 
 def GetNotebookID(notebook_name):
-    """ Find the ID of the destination folder
-    adapted logic from jhf2442 on Joplin forum
-    https://discourse.joplin.cozic.net/t/import-txt-files/692
-    """
     notebook_id = ""
     joplin = GetEndpoint()
 
-    try:
-        res = requests.get(joplin['endpoint'] +
-                           "/folders?token=" + joplin['token'])
+    page = 1
+    while True:
+        res = requests.get(joplin['endpoint'] + "/folders?token=" + joplin['token'] + "fields=id,title,parent_id&limit=100&page=" + str(page))
         folders = res.json()
+            
+        for folder in folders['items']:
+            if folder["title"] == notebook_name:
+                notebook_id = folder["id"]
+                break
 
-        for folder in folders:
-            if folder.get("title") == notebook_name:
-                notebook_id = folder.get("id")
-        if notebook_id == "":
-            for folder in folders:
-                if "children" in folder:
-                    for child in folder.get("children"):
-                        if child.get("title") == notebook_name:
-                            notebook_id = child.get("id")
-    except requests.ConnectionError as e:
-        print("Connection Error - Is Joplin Running?")
-    except Exception as e:
-        print("Error - on get joplin notebook id")
+        page += 1
 
-    if notebook_id == "" or notebook_id == "err":
+        if folders.get('has_more') == None or folders.get('has_more') == False:
+            break
+
+    if notebook_id == "":
         return False
     else:
         return notebook_id
