@@ -242,7 +242,7 @@ def Ping():
         return True
 
 
-def GetNotes(note_id=None, fields=None):
+def GetNotes(note_id=None, fields=None, limit=10, page=1, order_by="", order_dir="ASC"):
     joplin = GetEndpoint()
 
     if fields is None and note_id is not None:
@@ -251,12 +251,14 @@ def GetNotes(note_id=None, fields=None):
         fields = "id,title,is_todo,todo_completed,parent_id,updated_time,user_updated_time,user_created_time,encryption_applied"
 
     if note_id is not None:
-        note_id = "/" + note_id
+        response = requests.get(joplin['endpoint'] +
+                            "/notes/" + note_id + "?token=" + joplin['token'] + "&fields=" + fields)
     else:
-        note_id = ""
+        if order_by != "":
+            order_by = "&order_by=" + order_by
+        response = requests.get(joplin['endpoint'] +
+                            "/notes?token=" + joplin['token'] + "&fields=" + fields + "&limit=" + str(limit) + "&page=" + str(page) + "&order_dir=" + order_dir + order_by)
 
-    response = requests.get(joplin['endpoint'] +
-                            "/notes" + note_id + "?token=" + joplin['token'] + "&fields=" + fields)
     if response.status_code != 200:
         print("GetNotes ERROR")
         return False
@@ -266,11 +268,17 @@ def GetNotes(note_id=None, fields=None):
         return response.json()
 
 
-def GetNoteResources(note_id):
+def GetNoteResources(note_id, fields, limit=10, page=1, order_by="", order_dir="ASC"):
     joplin = GetEndpoint()
 
+    if fields is None:
+        fields = "id,title"
+
+    if order_by != "":
+        order_by = "&order_by=" + order_by
+
     response = requests.get(joplin['endpoint'] +
-                            "/notes/" + note_id + "/resources?token=" + joplin['token'])
+                            "/notes/" + note_id + "/resources?token=" + joplin['token'] + "&fields=" + fields + "&limit=" + str(limit) + "&page=" + str(page) + "&order_dir=" + order_dir + order_by)
 
     if response.status_code != 200:
         print("GetResources ERROR")

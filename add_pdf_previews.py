@@ -38,24 +38,23 @@ def Main(notebook, token, url):
         print("Wait for Joplin")
         time.sleep(10)
 
+    query = "resource:application/pdf"
     if notebook is not None:
-        notebook_id = joplinapi.GetNotebookID(notebook)
-        if notebook_id == False:
-            print("Notebook not found")
-            sys.exit(1)
-        else:
-            note_ids = joplinapi.GetFolderNotes(notebook_id)
-    else:
-        note_ids = joplinapi.GetNotes(None, "id")
+        query += ' notebook:"' + notebook + '"'
     
-    print("Process 1 of " + str(len(note_ids)) + " notes")
-    count = 1
-    for note in note_ids:
-        if count % 10 == 0:
-            print("Process " + str(count) + " of " + str(len(note_ids)) + " notes")
-        joplintools.AddPDFPreviewToNote(note['id'])
-        count += 1
-
+    page = 1
+    while True:
+        note_ids = joplinapi.Search(query=query,type="note", fields="id", limit=2, page=page)
+        count = 1
+        for note in note_ids['items']:
+            if count % 10 == 0:
+                    print("Process 1 of " + str(len(note_ids['items'])) + " notes from batch " + str(page))
+            joplintools.AddPDFPreviewToNote(note['id'])
+            count += 1
+        
+        page += page
+        if note_ids['has_more'] == False:
+            break;
 
 if __name__ == "__main__":
     Main()
