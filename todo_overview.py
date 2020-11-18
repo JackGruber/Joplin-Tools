@@ -68,12 +68,11 @@ def Main(notebook, title, token, url, add_tag, as_todo):
         add_tag = add_tag.replace(", ", ",")
         add_tag = add_tag.split(",")
 
-    note = joplinapi.Search('title:"' + title + '"', "note", "id,title,is_todo,body")
+    note = joplinapi.Search(query='title:"' + title + '"', type="note", fields="id,title,is_todo,body")
 
-    if len(note) == 1:
-        note_id = note[0]['id']
-        note = joplinapi.GetNotes(note_id,"id,title,is_todo,body")
-        body_org = note['body']
+    if len(note['items']) == 1:
+        note_id = note['items'][0]['id']
+        body_org = note['items'][0]['body']
     elif len(note) > 1:
         print("Error multiple matching notes found")
         sys.exit(1)
@@ -90,20 +89,25 @@ def Main(notebook, title, token, url, add_tag, as_todo):
         print("No notebook defined and no note with title '" + title + "' found.")
         sys.exit(1)
 
-    todos = joplinapi.Search("type:todo iscompleted:0",
-                             "note", "id,title,todo_due,todo_completed")
-    todos.sort(key=lambda r: r['todo_due'])
-
     body = "| Date | Title |\n"
     body += "| --- | --- |\n"
-    for todo in todos:
-        if note_id != todo['id']:
-            epoch = int(todo['todo_due'] / 1000)
-            date = datetime.fromtimestamp(epoch).strftime('%Y-%m-%d %H:%M')
-            if epoch < int(time.time()):
-                date += " \U00002757"
-            body += "|" + date + \
-                "|[" + todo['title'] + "](:/" + todo['id'] + ")|\n"
+    page = 1
+    while True:
+        todos = joplinapi.Search(query="type:todo iscompleted:0",
+                                type="note", fields="id,title,todo_due,todo_completed",
+                                order_by="todo_due", order_dir="ASC", page=page)
+        for todo in todos['items']:
+            if note_id != todo['id']:
+                epoch = int(todo['todo_due'] / 1000)
+                date = datetime.fromtimestamp(epoch).strftime('%Y-%m-%d %H:%M')
+                if epoch < int(time.time()):
+                    date += " \U00002757"
+                body += "|" + date + \
+                    "|[" + todo['title'] + "](:/" + todo['id'] + ")|\n"
+
+        page += 1
+        if todos['has_more'] == False:
+            break
 
     if note_id is None:
         note_id = joplinapi.CreateNote(title, body, notebook_id)

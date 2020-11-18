@@ -54,33 +54,25 @@ def GetEndpoint():
 
 
 def GetNotebookID(notebook_name):
-    """ Find the ID of the destination folder
-    adapted logic from jhf2442 on Joplin forum
-    https://discourse.joplin.cozic.net/t/import-txt-files/692
-    """
     notebook_id = ""
     joplin = GetEndpoint()
 
-    try:
-        res = requests.get(joplin['endpoint'] +
-                           "/folders?token=" + joplin['token'])
+    page = 1
+    while True:
+        res = requests.get(joplin['endpoint'] + "/folders?token=" + joplin['token'] + "fields=id,title,parent_id&limit=100&page=" + str(page))
         folders = res.json()
+            
+        for folder in folders['items']:
+            if folder["title"] == notebook_name:
+                notebook_id = folder["id"]
+                break
 
-        for folder in folders:
-            if folder.get("title") == notebook_name:
-                notebook_id = folder.get("id")
-        if notebook_id == "":
-            for folder in folders:
-                if "children" in folder:
-                    for child in folder.get("children"):
-                        if child.get("title") == notebook_name:
-                            notebook_id = child.get("id")
-    except requests.ConnectionError as e:
-        print("Connection Error - Is Joplin Running?")
-    except Exception as e:
-        print("Error - on get joplin notebook id")
+        page += 1
 
-    if notebook_id == "" or notebook_id == "err":
+        if folders.get('has_more') == None or folders.get('has_more') == False:
+            break
+
+    if notebook_id == "":
         return False
     else:
         return notebook_id
@@ -190,33 +182,14 @@ def EncodeResourceFile(filename, datatype):
     img = f"data:{datatype};base64,{encoded.decode()}"
     return img
 
-
-def LoadTags(reload=False):
-    joplin = GetEndpoint()
-    global JOPLIN_TAGS
-    if(reload == True or JOPLIN_TAGS is None):
-        response = requests.get(joplin['endpoint'] +
-                                "/tags?token=" + joplin['token'])
-        if response.status_code != 200:
-            print("Tag load ERROR")
-            return False
-        else:
-            JOPLIN_TAGS = response.json()
-    return JOPLIN_TAGS
-
-
 def GetTagID(search_tag):
-    tags = LoadTags()
     search_tag = search_tag.strip()
-
-    if tags == False:
+    tags = Search(search_tag, "tag", limit=10, page=1, fields="id")
+    
+    if len(tags['items']) == 1:
+        return tags['items'][0]['id']
+    else:
         return False
-    for tag in tags:
-        if tag['title'].lower() == search_tag.lower():
-            return tag['id']
-
-    return False
-
 
 def AddTagToNote(tag, note_id, create_tag=False):
     joplin = GetEndpoint()
@@ -249,7 +222,6 @@ def CreateTag(tag):
             return False
         else:
             json_response = response.json()
-            LoadTags(True)
             return json_response['id']
     return True
 
@@ -270,7 +242,7 @@ def Ping():
         return True
 
 
-def GetNotes(note_id=None, fields=None):
+def GetNotes(note_id=None, fields=None, limit=10, page=1, order_by="", order_dir="ASC"):
     joplin = GetEndpoint()
 
     if fields is None and note_id is not None:
@@ -279,12 +251,14 @@ def GetNotes(note_id=None, fields=None):
         fields = "id,title,is_todo,todo_completed,parent_id,updated_time,user_updated_time,user_created_time,encryption_applied"
 
     if note_id is not None:
-        note_id = "/" + note_id
+        response = requests.get(joplin['endpoint'] +
+                            "/notes/" + note_id + "?token=" + joplin['token'] + "&fields=" + fields)
     else:
-        note_id = ""
-
-    response = requests.get(joplin['endpoint'] +
-                            "/notes" + note_id + "?token=" + joplin['token'] + "&fields=" + fields)
+        if order_by != "":
+            order_by = "&order_by=" + order_by
+        response = requests.get(joplin['endpoint'] +
+                            "/notes?token=" + joplin['token'] + "&fields=" + fields + "&limit=" + str(limit) + "&page=" + str(page) + "&order_dir=" + order_dir + order_by)
+    
     if response.status_code != 200:
         print("GetNotes ERROR")
         return False
@@ -294,11 +268,17 @@ def GetNotes(note_id=None, fields=None):
         return response.json()
 
 
-def GetNoteResources(note_id):
+def GetNoteResources(note_id, fields, limit=10, page=1, order_by="", order_dir="ASC"):
     joplin = GetEndpoint()
 
+    if fields is None:
+        fields = "id,title"
+
+    if order_by != "":
+        order_by = "&order_by=" + order_by
+
     response = requests.get(joplin['endpoint'] +
-                            "/notes/" + note_id + "/resources?token=" + joplin['token'])
+                            "/notes/" + note_id + "/resources?token=" + joplin['token'] + "&fields=" + fields + "&limit=" + str(limit) + "&page=" + str(page) + "&order_dir=" + order_dir + order_by)
 
     if response.status_code != 200:
         print("GetResources ERROR")
@@ -339,27 +319,16 @@ def UpdateNote(note_id, json_properties):
     else:
         return True
 
-
-def GetFolderNotes(folder_id):
-    joplin = GetEndpoint()
-
-    response = requests.get(joplin['endpoint'] +
-                            "/folders/" + folder_id + "/notes?token=" + joplin['token'])
-    if response.status_code != 200:
-        print("GetFolderNotes ERROR")
-        return False
-    else:
-        return response.json()
-
-
-def Search(query, type, fields=None):
+def Search(query, type, limit=10, page=1, fields=None, order_by="", order_dir="ASC"):
     joplin = GetEndpoint()
 
     if fields is None:
         fields = "id,title"
 
+    if order_by != "":
+        order_by = "&order_by=" + order_by
     response = requests.get(joplin['endpoint'] +
-                            "/search?token=" + joplin['token'] + "&query=" + query + "&type=" + type + "&fields=" + fields)
+                            "/search?token=" + joplin['token'] + "&query=" + query + "&type=" + type + "&fields=" + fields + "&limit=" + str(limit) + "&page=" + str(page) + "&order_dir=" + order_dir + order_by)
     if response.status_code != 200:
         print("Search ERROR")
         return False
