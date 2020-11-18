@@ -258,7 +258,7 @@ def GetNotes(note_id=None, fields=None, limit=10, page=1, order_by="", order_dir
             order_by = "&order_by=" + order_by
         response = requests.get(joplin['endpoint'] +
                             "/notes?token=" + joplin['token'] + "&fields=" + fields + "&limit=" + str(limit) + "&page=" + str(page) + "&order_dir=" + order_dir + order_by)
-
+    
     if response.status_code != 200:
         print("GetNotes ERROR")
         return False
@@ -318,19 +318,6 @@ def UpdateNote(note_id, json_properties):
         return False
     else:
         return True
-
-
-def GetFolderNotes(folder_id):
-    joplin = GetEndpoint()
-
-    response = requests.get(joplin['endpoint'] +
-                            "/folders/" + folder_id + "/notes?token=" + joplin['token'])
-    if response.status_code != 200:
-        print("GetFolderNotes ERROR")
-        return False
-    else:
-        return response.json()
-
 
 def Search(query, type, limit=10, page=1, fields=None, order_by="", order_dir="ASC"):
     joplin = GetEndpoint()
