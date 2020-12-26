@@ -22,6 +22,7 @@ pip install PyMuPDF
 - [hotfolder.py](#hotfolderpy)
 - [add_pdf_previews.py](#add_pdf_previewspy)
 - [todo_overview.py](#todo_overviewpy)
+- [note_overview.py](#note_overviewpy)
 - [JoplinWinBackup.au3](#JoplinWinBackupau3)
 
 ### Parameters for all tools
@@ -92,6 +93,27 @@ Creates or Updates a note with a list of all open ToDo's. All to-dos that have b
 
 ```python
 python todo_overview.py --title "Open ToDo's" --as-todo --tag "importend"
+```
+
+### note_overview.py
+
+Creates or updates a note with a list of all notes that match the search query.
+
+<img src="img/note_overview.jpg">
+
+**Parameters**
+
+- `-n` Defines the notebook in which the new Note should be created.
+- `--title` Defines the title for the note to be updated or createt. Default `Note overview`
+- `--tag` Specify of comma separated Tags which should be added to the note. Example: `project, overview`
+- `--query` Specify the [seach query](https://joplinapp.org/#searching) for the Notes like in Joplin
+- `--order_by` Specify the field for the sorting of the Table content. (All Joplin fields can be used for sorting). Default `user_updated_time`
+- `--order_dir` Sorting sequence, possible values `DESC` or `ASC`. Default `DESC`
+
+**Example**
+
+```python
+python note_overview.py --query "tag:! tag:\"project xyz\"" -n Scans --title "Overview Important Notes" --tag "!"
 ```
 
 ### JoplinWinBackup.au3
