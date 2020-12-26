@@ -33,13 +33,9 @@ if( WinWaitActive("[REGEXPTITLE:^Joplin$; CLASS:Chrome_WidgetWin_1]","", 10) = 0
 EndIf
 
 ; Send keys for export menue
-$keyCombo = IniRead($INI, "General", "key_combo", "fej")
-Send ("!" & StringMid($keyCombo,1,1))
+$keyCombo = IniRead($INI, "General", "key_combo", "{ALT}{SPACE}ej")
+Send ($keyCombo)
 Sleep(100)
-For $i = 2 To StringLen($keyCombo) Step +1
-    Send (StringMid($keyCombo,$i,1))
-    Sleep(100)
-Next
 
 ; Wait wor save dialog
 $save_dialog = IniRead($INI, "General", "save_dialog", "Speichern unter")
