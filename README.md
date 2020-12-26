@@ -142,7 +142,7 @@ Options from the JoplinWinBackup.ini
 
 ## 2020-12-26 v1.5.1
 
-- Fix two outputs onthe console
+- Fix two outputs on the console
 
 ## 2020-12-26 v1.5.0
 
