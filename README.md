@@ -137,3 +137,24 @@ Options from the JoplinWinBackup.ini
 - `backup_file_add_time` Append time to the Backupfile. Default `1`, `0` = No, `1`= Yes
 - `backup_file_name` Filename of the Backup. Default `joplin_backup.jex`
 - `overwrite_file` Overwrite existing backup file. Default `0`, `0` = No, `1`= Yes
+
+## Changelog
+
+## 2020-12-26 v1.5.0
+
+- Added note_overview.py script
+
+### add_pdf_previews.py
+
+- Keep original updated time when adding PDF preview
+
+### JoplinWinBackup
+
+- Read complet key_combo from ini
+- Read sleep value wait_overwrite_dialog from ini
+
+## 2020-11-18 v1.4.0
+
+❗ breaking changes, requires at least Joplin v1.4.11  ❗
+
+- Change to new Joplin API
