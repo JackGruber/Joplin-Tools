@@ -112,7 +112,6 @@ def Main(notebook, title, add_tag, token, url, query, order_by, order_dir):
     body = "| created time | updated time | Title |\n"
     body += "| --- | --- | --- |\n"
     page = 1
-    print(query)
     while True:
         search = joplinapi.Search(query, 'note', limit=50, page=page, fields='id, title, created_time, user_updated_time', order_by=order_by, order_dir=order_dir)
         for note in search['items']:
