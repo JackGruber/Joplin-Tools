@@ -69,7 +69,7 @@ $BACKUPFILE = $BACKUPFILE & ".jex"
 ControlSetText($hSAVE, "", "[CLASS:Edit]", $BACKUPFOLDER & "\" & $BACKUPFILE)
 Sleep(50)
 ControlClick($hSAVE, "", "[Class:Button;Instance:2]")
-Sleep(500)
+Sleep(IniRead($INI, "General", "wait_overwrite_dialog", 200))
 
 ; Check for confirmation dialog
 $hCONFIRM = WinGetHandle ( "[ACTIVE]", "" )
