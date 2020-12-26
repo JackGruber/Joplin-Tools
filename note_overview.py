@@ -138,7 +138,7 @@ def Main(notebook, title, add_tag, token, url, query, order_by, order_dir):
             data = {}
             data['body'] = body
             if( joplinapi.UpdateNote(overview_id, json.dumps(data)) ):
-                print("Note '" + title + "' in '" + notebook + "' updated")
+                print("Note '" + title + " updated")
             else:
                 print("Error on note create")
                 sys.exit(1)
