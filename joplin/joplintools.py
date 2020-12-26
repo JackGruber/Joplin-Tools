@@ -65,7 +65,7 @@ def AddPDFPreviewToNote(note_id):
                 print("")
                 return True
             else:
-                note = joplinapi.GetNotes(note_id, "body, title")
+                note = joplinapi.GetNotes(note_id, "body, title, user_updated_time")
                 body_new = note['body']
 
                 print("\t" + note['title'])
@@ -97,6 +97,7 @@ def AddPDFPreviewToNote(note_id):
                 if note_update == True:
                     data = {}
                     data['body'] = body_new
+                    data['user_updated_time'] = note['user_updated_time']
                     json_data = json.dumps(data)
                     joplinapi.UpdateNote(note_id, json_data)
                 print("")
