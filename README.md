@@ -140,6 +140,10 @@ Options from the JoplinWinBackup.ini
 
 ## Changelog
 
+## 2020-12-26 v1.5.1
+
+- Fix two outputs onthe console
+
 ## 2020-12-26 v1.5.0
 
 - Added note_overview.py script
