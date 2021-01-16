@@ -78,6 +78,8 @@ python add_pdf_previews.py -n "Import"
 
 ---
 
+> &#11088; The same functionality is now available as [Note overview](https://github.com/JackGruber/joplin-plugin-note-overview) plugin.
+
 Creates or Updates a note with a list of all open ToDo's. All to-dos that have been exceeded are marked with a ❗.
 
 <img src="img/todo_overview.jpg">
@@ -96,6 +98,8 @@ python todo_overview.py --title "Open ToDo's" --as-todo --tag "importend"
 ```
 
 ### note_overview.py
+
+> &#11088; The same functionality is now available as [Note overview](https://github.com/JackGruber/joplin-plugin-note-overview) plugin.
 
 Creates or updates a note with a list of all notes that match the search query.
 
