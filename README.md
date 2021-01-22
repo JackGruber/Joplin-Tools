@@ -101,7 +101,7 @@ python todo_overview.py --title "Open ToDo's" --as-todo --tag "importend"
 
 ---
 
-> &#11088; The same functionality is now available as [Note overview](https://github.com/JackGruber/joplin-plugin-note-overview) plugin.
+> &#11088; There is now a backup plugin available! [Simple Backup](https://github.com/JackGruber/joplin-plugin-backup) plugin.
 
 Creates or updates a note with a list of all notes that match the search query.
 
@@ -125,6 +125,9 @@ python note_overview.py --query "tag:! tag:\"project xyz\"" -n Scans --title "Ov
 ### JoplinWinBackup.au3
 
 ---
+
+> &#11088; The same functionality is now available as [Note overview](https://github.com/JackGruber/joplin-plugin-note-overview) plugin.
+
 
 Since there is no possibility for an automatic backup under windows, the required key combinations are sent to joplin via autoit to create a backup.
 
