@@ -36,6 +36,8 @@ If no token is specified, the script will ask for it and then store it in the sc
 
 ---
 
+> &#11088; Almost all functions are available as [Hotfolder](https://github.com/JackGruber/joplin-plugin-hotfolder) plugin.
+
 Monitor a folder an add the Files to Joplin as a Note.
 
 Images and text (Mimetype `text/plain`) are inserted directly into the note, other Files are added as attachment. The files are deleted after processing.
