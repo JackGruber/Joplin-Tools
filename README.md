@@ -36,6 +36,8 @@ If no token is specified, the script will ask for it and then store it in the sc
 
 ---
 
+> &#11088; Almost all functions are available as [Hotfolder](https://github.com/JackGruber/joplin-plugin-hotfolder) plugin.
+
 Monitor a folder an add the Files to Joplin as a Note.
 
 Images and text (Mimetype `text/plain`) are inserted directly into the note, other Files are added as attachment. The files are deleted after processing.
@@ -78,6 +80,8 @@ python add_pdf_previews.py -n "Import"
 
 ---
 
+> &#11088; The same functionality is now available as [Note overview](https://github.com/JackGruber/joplin-plugin-note-overview) plugin.
+
 Creates or Updates a note with a list of all open ToDo's. All to-dos that have been exceeded are marked with a ❗.
 
 <img src="img/todo_overview.jpg">
@@ -96,6 +100,10 @@ python todo_overview.py --title "Open ToDo's" --as-todo --tag "importend"
 ```
 
 ### note_overview.py
+
+---
+
+> &#11088; The same functionality is now available as [Note overview](https://github.com/JackGruber/joplin-plugin-note-overview) plugin.
 
 Creates or updates a note with a list of all notes that match the search query.
 
@@ -120,6 +128,8 @@ python note_overview.py --query "tag:! tag:\"project xyz\"" -n Scans --title "Ov
 
 ---
 
+> &#11088; There is now a backup plugin available! [Simple Backup](https://github.com/JackGruber/joplin-plugin-backup) plugin.
+
 Since there is no possibility for an automatic backup under windows, the required key combinations are sent to joplin via autoit to create a backup.
 
 Rename the `JoplinWinBackup.ini.example` to `JoplinWinBackup.ini` and place it in the same folder es the `JoplinWinBackup.au3` or `JoplinWinBackup.exe`.
@@ -139,6 +149,10 @@ Options from the JoplinWinBackup.ini
 - `overwrite_file` Overwrite existing backup file. Default `0`, `0` = No, `1`= Yes
 
 ## Changelog
+
+## 2020-12-26 v1.5.1
+
+- Fix two outputs on the console
 
 ## 2020-12-26 v1.5.0
 
